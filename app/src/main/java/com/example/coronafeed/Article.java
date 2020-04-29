@@ -4,16 +4,14 @@ public class Article {
     private String mTitle;
     private String mUrl;
     private String mSource;
-    private String mAuthor;
     private String mDescription;
     private String mDate;
 
 
-    public Article(String mTitle, String mUrl, String mSource, String mAuthor, String mDescription, String mDate) {
+    public Article(String mTitle, String mUrl, String mSource,  String mDescription, String mDate) {
         this.mTitle = mTitle;
         this.mUrl = mUrl;
         this.mSource = mSource;
-        this.mAuthor = mAuthor;
         this.mDescription = mDescription;
         this.mDate = mDate;
     }
@@ -56,13 +54,5 @@ public class Article {
 
     public void setDate(String mDate) {
         this.mDate = mDate;
-    }
-
-    public String getAuthor() {
-        return mAuthor;
-    }
-
-    public void setAuthor(String mAuthor) {
-        this.mAuthor = mAuthor;
     }
 }

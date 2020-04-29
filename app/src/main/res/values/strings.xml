@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Coronafeed</string>
     <string name="mainheader">Main Page</string>
+    <string name="text_headline">Headline</string>
+    <string name="text_date">April 28 2020</string>
+    <string name="text_source">Cool News Network</string>
+
 </resources>
