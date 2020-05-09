@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresPermission;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,7 +25,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
     private RecyclerView mArticleRecyclerView;
     private ArrayList<Article> mArticleLab;
     private ViewAdapter mViewAdapter;
@@ -37,8 +39,6 @@ public class MainActivity extends Activity {
         mArticleLab = new ArrayList<>();
         new ProcessInBackground().execute();
         buildRecyclerView();
-
-
     }
 
 
@@ -142,7 +142,13 @@ public class MainActivity extends Activity {
         mArticleRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mViewAdapter.setOnItemClickListener(new ViewAdapter.onItemClickListener() {
-            
+            @Override
+            public void onItemClick(int position) {
+                Article art = mArticleLab.get(position);
+                ReadMoreDialog dialog = new ReadMoreDialog(art.getDescription(),art.getUrl());
+                dialog.show(getSupportFragmentManager(),"read more");
+            }
         });
     }
+
 }

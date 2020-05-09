@@ -4,5 +4,6 @@
     <string name="text_headline">Headline</string>
     <string name="text_date">April 28 2020</string>
     <string name="text_source">Cool News Network</string>
+    <string name="text_description">"Article Description "</string>
 
 </resources>

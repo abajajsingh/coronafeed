@@ -8,12 +8,16 @@ public class Article {
     private String mDate;
 
 
-    public Article(String mTitle, String mUrl, String mSource,  String mDescription, String mDate) {
-        this.mTitle = mTitle;
-        this.mUrl = mUrl;
-        this.mSource = mSource;
-        this.mDescription = mDescription;
-        this.mDate = mDate;
+    public Article(String title, String url, String source,  String description, String date) {
+        description = correctsDescription(description,
+                description.indexOf("<div>"),
+                description.indexOf("</div>"));
+
+        mTitle = title;
+        mUrl = url;
+        mSource = source;
+        mDescription = description;
+        mDate = date.substring(0,16);
     }
 
     public String getTitle() {
@@ -54,5 +58,22 @@ public class Article {
 
     public void setDate(String mDate) {
         this.mDate = mDate;
+    }
+
+    private String correctsDescription(String description, int openingIndex, int closingIndex) {
+        String newDescript;
+        if(openingIndex != -1) {
+            newDescript = description.substring(openingIndex + 5);
+            return correctsDescription(newDescript,
+                    newDescript.indexOf("<div>"),
+                    newDescript.indexOf("</div>"));
+        } else if(closingIndex != -1) {
+            newDescript = description.substring(0,closingIndex);
+            return correctsDescription(newDescript,
+                    newDescript.indexOf("<div>"),
+                    newDescript.indexOf("</div>"));
+        } else {
+            return description;
+        }
     }
 }
