@@ -5,6 +5,9 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,23 +26,19 @@ import java.util.List;
 public class MainActivity extends Activity {
     private RecyclerView mArticleRecyclerView;
     private ArrayList<Article> mArticleLab;
+    private ViewAdapter mViewAdapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        mArticleLab = new ArrayList<>();
-        new ProcessInBackground().execute();
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mArticleRecyclerView = findViewById(R.id.article_view);
-        ViewAdapter viewAdapter = new ViewAdapter(this, mArticleLab);
-        mArticleRecyclerView.setAdapter(viewAdapter);
-        mArticleRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mArticleLab = new ArrayList<>();
+        new ProcessInBackground().execute();
+        buildRecyclerView();
 
-        Log.i(this.getLocalClassName(),"Activity created.");
-        Log.d("list-size2", "" + mArticleLab.size());
+
     }
 
 
@@ -66,7 +65,7 @@ public class MainActivity extends Activity {
         @Override
         protected Exception doInBackground(Integer... integers) {
             try {
-                URL url = new URL("https://rss.app/feeds/6LBg9dueEjaUYCE1");
+                URL url = new URL("https://rss.app/feeds/VbzlGVUV0rEGlznl.xml");
                 XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                 factory.setNamespaceAware(false);
                 XmlPullParser xpp = factory.newPullParser();
@@ -107,16 +106,12 @@ public class MainActivity extends Activity {
                             }
                         }
                     } else if (eventType == XmlPullParser.END_TAG && xpp.getName().equalsIgnoreCase("item")) {
-                        Log.d("thing", name + "   " + link + "   " + src + "  ");
-                        Article art = new Article(name, link, src, description, date);
-                        mArticleLab.add(art);
-                        Log.d("list-size", "" + mArticleLab.size());
+                        mArticleLab.add(new Article(name, link, src, description, date));
                         insideItem = false;
                     }
-
-
                     eventType = xpp.next();
                 }
+
             } catch (MalformedURLException e) {
                 exception = e;
             } catch (XmlPullParserException e) {
@@ -130,9 +125,24 @@ public class MainActivity extends Activity {
 
         protected void onPostExecute(Exception s) {
             super.onPostExecute(s);
+            Log.d("list-size2", "" + mArticleLab.size());
+            for(Article a : mArticleLab) {
+                Log.d("titles-2", "" + a.getTitle());
+            }
+            mViewAdapter.notifyDataSetChanged();
             progressDialog.dismiss();
         }
 
+    }
 
+    public void buildRecyclerView() {
+        mArticleRecyclerView = findViewById(R.id.article_view);
+        mViewAdapter = new ViewAdapter(this, mArticleLab);
+        mArticleRecyclerView.setAdapter(mViewAdapter);
+        mArticleRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        mViewAdapter.setOnItemClickListener(new ViewAdapter.onItemClickListener() {
+            
+        });
     }
 }
