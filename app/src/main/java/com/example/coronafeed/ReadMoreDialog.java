@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,7 +16,7 @@ public class ReadMoreDialog extends AppCompatDialogFragment {
     private String mDescription;
     private String mLink;
     public ReadMoreDialog(String description, String link) {
-        mDes cription = description;
+        mDescription = description;
         mLink = link;
     }
 
@@ -31,6 +32,15 @@ public class ReadMoreDialog extends AppCompatDialogFragment {
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         intent.setData(Uri.parse(mLink));
                         startActivity(intent);
+                    }
+                })
+                .setNeutralButton("Save", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast toast = Toast.makeText(getContext(),
+                                "Adding to read later list...",
+                                Toast.LENGTH_SHORT);
+                        toast.show();
                     }
                 })
                 .setPositiveButton("Exit", new DialogInterface.OnClickListener() {

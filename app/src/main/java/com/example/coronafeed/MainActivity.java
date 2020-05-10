@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,12 +31,21 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mArticleRecyclerView;
     private ArrayList<Article> mArticleLab;
     private ViewAdapter mViewAdapter;
+    private ArticleViewModel articleViewModel;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        articleViewModel = ViewModelProviders.of(this).get(ArticleViewModel.class);
+        articleViewModel.getAllArticles().observe(this, new Observer<List<ReadLaterArticle>>() {
+            @Override
+            public void onChanged(List<ReadLaterArticle> readLaterArticles) {
+                //update RecyclerView
+                Toast.makeText(MainActivity.this, "onChanged", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         mArticleLab = new ArrayList<>();
         new ProcessInBackground().execute();

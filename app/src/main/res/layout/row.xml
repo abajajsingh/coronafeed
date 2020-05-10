@@ -17,14 +17,14 @@
 
             <TextView
                 android:id="@+id/headline"
-                android:layout_width="365dp"
-                android:layout_height="74dp"
+                android:layout_width="348dp"
+                android:layout_height="73dp"
                 android:layout_margin="15dp"
                 android:text="@string/text_headline"
                 android:textColor="@color/colorFont"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="16dp" />
+                tools:layout_editor_absoluteY="17dp" />
 
             <TextView
                 android:id="@+id/date"
