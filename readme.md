@@ -1,5 +1,7 @@
 # Coronafeed
 ![Gif](https://media1.giphy.com/media/gkXSfmA8ynT59X9rr4/giphy.gif?cid=ecf05e4791af4b03f65e8622147f71e2ef433050d41d8ddd&rid=giphy.gif)
+
+
 An android app for all your Corona news related needs
 
 ## Purpose
