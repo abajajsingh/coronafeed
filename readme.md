@@ -1,6 +1,6 @@
 # Coronafeed
-![Gif](https://media1.giphy.com/media/gkXSfmA8ynT59X9rr4/giphy.gif?cid=ecf05e4791af4b03f65e8622147f71e2ef433050d41d8ddd&rid=giphy.gif)
 
+<img src="https://media1.giphy.com/media/gkXSfmA8ynT59X9rr4/giphy.gif?cid=ecf05e4791af4b03f65e8622147f71e2ef433050d41d8ddd&rid=giphy.gif" width="250" height="250" />
 
 An android app for all your Corona news related needs
 
@@ -24,6 +24,10 @@ All throughout this LiveData is used to bubble data directly from the database t
 Here's a graphic straight from the video that visualizes the whole process. It's very neat!
 
 6. **And the very best feature:** A dark theme :shipit:
+
+## Demo
+<img src="https://i.imgur.com/mzD6mg9.gif" width="250" height="500" />
+
 
 
 
