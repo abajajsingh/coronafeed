@@ -23,5 +23,7 @@ All throughout this LiveData is used to bubble data directly from the database t
 
 Here's a graphic straight from the video that visualizes the whole process. It's very neat!
 
+6. **And the very best feature:** A dark theme :shipit:
+
 
 
