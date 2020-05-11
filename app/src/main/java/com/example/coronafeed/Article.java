@@ -4,18 +4,24 @@ public class Article {
     private String mTitle;
     private String mUrl;
     private String mSource;
-    private String mAuthor;
     private String mDescription;
     private String mDate;
 
 
-    public Article(String mTitle, String mUrl, String mSource, String mAuthor, String mDescription, String mDate) {
-        this.mTitle = mTitle;
-        this.mUrl = mUrl;
-        this.mSource = mSource;
-        this.mAuthor = mAuthor;
-        this.mDescription = mDescription;
-        this.mDate = mDate;
+    public Article(String title, String url, String source,  String description, String date) {
+        description = correctsDescription(description,
+                description.indexOf("<div>"),
+                description.indexOf("</div>"));
+
+        if(description.contains("</iframe>")) {
+            description = "No description available";
+        }
+
+        mTitle = title;
+        mUrl = url;
+        mSource = source;
+        mDescription = description;
+        mDate = date.substring(0,16);
     }
 
     public String getTitle() {
@@ -58,11 +64,21 @@ public class Article {
         this.mDate = mDate;
     }
 
-    public String getAuthor() {
-        return mAuthor;
-    }
 
-    public void setAuthor(String mAuthor) {
-        this.mAuthor = mAuthor;
+    private String correctsDescription(String description, int openingIndex, int closingIndex) {
+        String newDescript;
+        if(openingIndex != -1) {
+            newDescript = description.substring(openingIndex + 5);
+            return correctsDescription(newDescript,
+                    newDescript.indexOf("<div>"),
+                    newDescript.indexOf("</div>"));
+        } else if(closingIndex != -1) {
+            newDescript = description.substring(0,closingIndex);
+            return correctsDescription(newDescript,
+                    newDescript.indexOf("<div>"),
+                    newDescript.indexOf("</div>"));
+        } else {
+            return description;
+        }
     }
 }
