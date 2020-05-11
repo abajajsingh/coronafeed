@@ -5,5 +5,8 @@
     <string name="text_date">April 28 2020</string>
     <string name="text_source">Cool News Network</string>
     <string name="text_description">"Article Description "</string>
+    <string name="home">Home</string>
+    <string name="read_later">Read Later</string>
+    <string name="no_articles_saved">You currently have no articles saved. Save some and come back.</string>
 
 </resources>

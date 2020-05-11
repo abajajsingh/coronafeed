@@ -5,16 +5,21 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -28,9 +33,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private RecyclerView mArticleRecyclerView;
-    private ArrayList<Article> mArticleLab;
-    private ViewAdapter mViewAdapter;
     private ArticleViewModel articleViewModel;
 
 
@@ -47,119 +49,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mArticleLab = new ArrayList<>();
-        new ProcessInBackground().execute();
-        buildRecyclerView();
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setOnNavigationItemSelectedListener(navListener);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                new HomeFragment()).commit();
     }
 
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    Fragment selectedFragment = null;
 
-    public InputStream getInputStream(URL url) {
-        try {
-            return url.openConnection()
-                    .getInputStream();
-        } catch(IOException e) {
-            return null;
-        }
-    }
-
-    public class ProcessInBackground extends AsyncTask<Integer, Void, Exception> {
-        ProgressDialog progressDialog = new ProgressDialog(MainActivity.this);
-        Exception exception = null;
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            progressDialog.setMessage("Loading RSS Feed... ");
-            progressDialog.show();
-        }
-
-        @Override
-        protected Exception doInBackground(Integer... integers) {
-            try {
-                URL url = new URL("https://rss.app/feeds/VbzlGVUV0rEGlznl.xml");
-                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-                factory.setNamespaceAware(false);
-                XmlPullParser xpp = factory.newPullParser();
-                xpp.setInput(getInputStream(url), "UTF_8");
-
-                boolean insideItem = false;
-                int eventType = xpp.getEventType();
-
-                String name = "";
-                String link = "";
-                String src = "";
-                String description = "";
-                String date = "";
-
-                while (eventType != XmlPullParser.END_DOCUMENT) {
-                    if (eventType == XmlPullParser.START_TAG) {
-                        if (xpp.getName().equalsIgnoreCase("item")) {
-                            insideItem = true;
-                        } else if (xpp.getName().equalsIgnoreCase("title")) {
-                            if (insideItem) {
-                                name = xpp.nextText();
-                            }
-                        } else if (xpp.getName().equalsIgnoreCase("description")) {
-                            if (insideItem) {
-                                description = xpp.nextText();
-                            }
-                        } else if (xpp.getName().equalsIgnoreCase("link")) {
-                            if (insideItem) {
-                                link = xpp.nextText();
-                            }
-                        } else if (xpp.getName().equalsIgnoreCase("dc:creator")) {
-                            if (insideItem) {
-                                src = xpp.nextText();
-                            }
-                        } else if (xpp.getName().equalsIgnoreCase("pubDate")) {
-                            if (insideItem) {
-                                date = xpp.nextText();
-                            }
-                        }
-                    } else if (eventType == XmlPullParser.END_TAG && xpp.getName().equalsIgnoreCase("item")) {
-                        mArticleLab.add(new Article(name, link, src, description, date));
-                        insideItem = false;
+                    switch(item.getItemId()) {
+                        case R.id.nav_home:
+                            selectedFragment = new HomeFragment();
+                            break;
+                        case R.id.nav_read_later:
+                            selectedFragment = new ReadLaterFragment();
+                            break;
                     }
-                    eventType = xpp.next();
+
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            selectedFragment).commit();
+                    return true;
                 }
-
-            } catch (MalformedURLException e) {
-                exception = e;
-            } catch (XmlPullParserException e) {
-                exception = e;
-            } catch (IOException e) {
-                exception = e;
-            }
-
-            return exception;
-        }
-
-        protected void onPostExecute(Exception s) {
-            super.onPostExecute(s);
-            Log.d("list-size2", "" + mArticleLab.size());
-            for(Article a : mArticleLab) {
-                Log.d("titles-2", "" + a.getTitle());
-            }
-            mViewAdapter.notifyDataSetChanged();
-            progressDialog.dismiss();
-        }
-
-    }
-
-    public void buildRecyclerView() {
-        mArticleRecyclerView = findViewById(R.id.article_view);
-        mViewAdapter = new ViewAdapter(this, mArticleLab);
-        mArticleRecyclerView.setAdapter(mViewAdapter);
-        mArticleRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        mViewAdapter.setOnItemClickListener(new ViewAdapter.onItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                Article art = mArticleLab.get(position);
-                ReadMoreDialog dialog = new ReadMoreDialog(art.getDescription(),art.getUrl());
-                dialog.show(getSupportFragmentManager(),"read more");
-            }
-        });
-    }
-
+            };
 }
