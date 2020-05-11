@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,7 +37,6 @@ public class ReadLaterFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         articleViewModel = ViewModelProviders.of(this).get(ArticleViewModel.class);
-
         articleViewModel.getAllArticles().observe(this, new Observer<List<ReadLaterArticle>>() {
             @Override
             public void onChanged(List<ReadLaterArticle> readLaterArticles) {
@@ -75,6 +75,20 @@ public class ReadLaterFragment extends Fragment {
                 dialog.show(getFragmentManager(),"read more");
             }
         });
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT| ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                articleViewModel.delete(mViewAdapter.getReadLaterArticleAt(viewHolder.getAdapterPosition()));
+                Toast.makeText(mContext,"Article Removed From Read Later", Toast.LENGTH_SHORT).show();
+            }
+        }).attachToRecyclerView(mArticleRecyclerView);
 
     }
 

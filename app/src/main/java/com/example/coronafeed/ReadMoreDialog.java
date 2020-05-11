@@ -61,6 +61,7 @@ public class ReadMoreDialog extends AppCompatDialogFragment {
                                     curArticle.getSource(),
                                     curArticle.getDescription(),
                                     curArticle.getDate());
+
                             articleViewModel.insert(rl_art);
 
 
@@ -85,21 +86,6 @@ public class ReadMoreDialog extends AppCompatDialogFragment {
                             Intent intent = new Intent(Intent.ACTION_VIEW);
                             intent.setData(Uri.parse(mLink));
                             startActivity(intent);
-                        }
-                    })
-                    .setNeutralButton("Delete", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            ReadLaterArticle rl_art = new ReadLaterArticle(curArticle.getTitle(),
-                                    curArticle.getUrl(),
-                                    curArticle.getSource(),
-                                    curArticle.getDescription(),
-                                    curArticle.getDate());
-                            articleViewModel.delete(rl_art);
-                            Toast toast = Toast.makeText(getContext(),
-                                    "Article removed",
-                                    Toast.LENGTH_SHORT);
-                            toast.show();
                         }
                     })
                     .setPositiveButton("Exit", new DialogInterface.OnClickListener() {

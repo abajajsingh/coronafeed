@@ -64,6 +64,7 @@ public class Article {
         this.mDate = mDate;
     }
 
+
     private String correctsDescription(String description, int openingIndex, int closingIndex) {
         String newDescript;
         if(openingIndex != -1) {

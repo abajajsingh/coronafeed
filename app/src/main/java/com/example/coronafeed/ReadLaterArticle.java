@@ -13,12 +13,14 @@ public class ReadLaterArticle {
     private String mDescription;
     private String mDate;
 
+
     public ReadLaterArticle(String mTitle, String mUrl, String mSource, String mDescription, String mDate) {
         this.mTitle = mTitle;
         this.mUrl = mUrl;
         this.mSource = mSource;
         this.mDescription = mDescription;
         this.mDate = mDate;
+
     }
 
     public void setId(int id) {
