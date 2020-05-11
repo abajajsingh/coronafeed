@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +32,7 @@ public class HomeFragment extends Fragment {
     private ViewAdapter mViewAdapter;
     private Context mContext;
     protected View mView;
+    private ArticleViewModel articleViewModel;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -41,6 +43,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        articleViewModel = ViewModelProviders.of(this).get(ArticleViewModel.class);
         mArticleLab = new ArrayList<>();
         new ProcessInBackground().execute();
     }
@@ -137,10 +140,6 @@ public class HomeFragment extends Fragment {
 
         protected void onPostExecute(Exception s) {
             super.onPostExecute(s);
-            Log.d("list-size2", "" + mArticleLab.size());
-            for(Article a : mArticleLab) {
-                Log.d("titles-2", "" + a.getTitle());
-            }
             mViewAdapter.notifyDataSetChanged();
             progressDialog.dismiss();
         }
@@ -157,7 +156,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 Article art = mArticleLab.get(position);
-                ReadMoreDialog dialog = new ReadMoreDialog(art.getDescription(),art.getUrl());
+                ReadMoreDialog dialog = new ReadMoreDialog(art.getDescription(),art.getUrl(), art, articleViewModel, true);
                 dialog.show(getFragmentManager(),"read more");
             }
         });

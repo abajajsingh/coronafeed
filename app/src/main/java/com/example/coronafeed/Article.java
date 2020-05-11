@@ -13,6 +13,10 @@ public class Article {
                 description.indexOf("<div>"),
                 description.indexOf("</div>"));
 
+        if(description.contains("</iframe>")) {
+            description = "No description available";
+        }
+
         mTitle = title;
         mUrl = url;
         mSource = source;

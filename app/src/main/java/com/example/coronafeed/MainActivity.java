@@ -33,21 +33,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private ArticleViewModel articleViewModel;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        articleViewModel = ViewModelProviders.of(this).get(ArticleViewModel.class);
-        articleViewModel.getAllArticles().observe(this, new Observer<List<ReadLaterArticle>>() {
-            @Override
-            public void onChanged(List<ReadLaterArticle> readLaterArticles) {
-                //update RecyclerView
-                Toast.makeText(MainActivity.this, "onChanged", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);

@@ -30,6 +30,11 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewAdapterHol
         list = a;
     }
 
+    public ViewAdapter(Context ct) {
+        list = new ArrayList<>();
+        context = ct;
+    }
+
     @NonNull
     @Override
     public ViewAdapterHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -50,8 +55,15 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewAdapterHol
         return list.size();
     }
 
+    public void setArticles(ArrayList<Article> articles) {
+        this.list = articles;
+        notifyDataSetChanged();
+    }
+
+
     public class ViewAdapterHolder extends RecyclerView.ViewHolder {
         TextView headline, src, date;
+
         public ViewAdapterHolder(@NonNull View itemView) {
             super(itemView);
             headline = itemView.findViewById(R.id.headline);
@@ -61,9 +73,9 @@ public class ViewAdapter extends RecyclerView.Adapter<ViewAdapter.ViewAdapterHol
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(mListener != null) {
+                    if (mListener != null) {
                         int position = getAdapterPosition();
-                        if(position != RecyclerView.NO_POSITION) {
+                        if (position != RecyclerView.NO_POSITION) {
                             mListener.onItemClick(position);
                         }
                     }
